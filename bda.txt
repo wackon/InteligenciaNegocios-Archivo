@@ -1,0 +1,108 @@
+Especializacion bases de datos
+
+https://www.youtube.com/watch?v=8uFPZtQVddg
+https://www.youtube.com/watch?v=jVA_SxBAPK0
+create database Articulos
+
+use master
+go
+create database ArticulosInt_Neg
+go
+use ArticulosInt_Neg
+go
+
+create table Articulo(
+idArt int  primary key not null,
+palabrasClaves varchar(20),
+AnioPublicacion date,
+titulo varchar (100)
+);
+
+create table temaRevista(
+id int  primary key not null,
+descripction varchar (100)
+);
+
+create table RevistaCientifica(
+idRev int primary key not null,
+nombre varchar (100),
+nombreEditor varchar(100),
+FrecuenciaPublicacion varchar(30),
+NumeroRevista int,
+paginasOcupadas int,
+anio date,
+foreign key (idRev) references Articulo(idArt),
+);
+
+create table informeTecnico(
+idInf int primary key not null,
+numero varchar (100),
+centro varchar (50),
+mes int,
+foreign key (idInf) references Articulo(idArt),
+);
+
+create table tiposTema(
+idRevC int ,
+idTemR int ,
+foreign key (idRevC) references RevistaCientifica(idRev),
+foreign key (idTemR) references TemaRevista (id),
+constraint pk_tt primary key(idRevC,idTemR)
+);
+
+create table Copia(
+id int primary key not null,
+lugar varchar (100)
+);
+
+create table CopiaArticulo(
+idArt1 int ,
+idCop1 int ,
+foreign key (idArt1) references Articulo(idArt),
+foreign key (idCop1) references Copia (id),
+constraint cp_art primary key(idArt1,idCop1)
+);
+
+create table TipoCongreso(
+idTipCo int primary key not null,
+Tipo varchar (100),
+frecuenciaCongreso varchar(50),
+pais varchar (40),
+primeraCelebracion varchar(40)
+);
+
+
+create table ActaCongreso(
+idActC int,
+idTipCo1 int,
+NombreCongreso varchar (100),
+edicion varchar (10),
+ciudad varchar (50),
+fechaInicio date,
+fechaFin date,
+foreign key (idActC) references Articulo(idArt),
+foreign key (idTipCo1) references TipoCongreso (idTipCo)
+);
+
+create table TemaPersona(
+idTeEs int primary key not null,
+descripcion varchar(100),
+);
+
+
+create table Persona(
+idPer int primary key not null,
+Ocupacion varchar(100),
+CentroTrabajo varchar(100),
+Correo varchar(100),
+idTema int,
+foreign key (idTema) references TemaPersona (idTeEs)
+);
+
+
+Alter table Articulo add
+idPer int not null,
+foreign key (idper) references Persona (idPer);
+
+
+
